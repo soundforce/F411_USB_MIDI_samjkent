@@ -1,0 +1,1505 @@
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"usbd_midi.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.USBD_MIDI_Setup,"ax",%progbits
+  20              		.align	1
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	USBD_MIDI_Setup:
+  26              	.LVL0:
+  27              	.LFB135:
+  28              		.file 1 "Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c"
+   1:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+   2:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   ******************************************************************************
+   3:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @file    usbd_midi.c
+   4:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @author  Sam Kent
+   5:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief   This file provides the MIDI core functions.
+   6:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *
+   7:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   ******************************************************************************
+   8:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+   9:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  10:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /* Includes ------------------------------------------------------------------*/
+  11:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** #include "usbd_midi.h"
+  12:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** #include "usbd_ctlreq.h"
+  13:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  14:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  15:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /** @addtogroup STM32_USB_DEVICE_LIBRARY
+  16:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @{
+  17:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+  18:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  19:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  20:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /** @defgroup USBD_MIDI
+  21:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief usbd core module
+  22:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @{
+  23:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+  24:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  25:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /** @defgroup USBD_MIDI_Private_TypesDefinitions
+  26:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @{
+  27:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+  28:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+  29:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @}
+  30:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 2
+
+
+  31:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  32:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  33:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /** @defgroup USBD_MIDI_Private_Defines
+  34:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @{
+  35:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+  36:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+  37:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @}
+  38:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+  39:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  40:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  41:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /** @defgroup USBD_MIDI_Private_Macros
+  42:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @{
+  43:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+  44:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  45:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+  46:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @}
+  47:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+  48:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  49:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  50:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  51:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  52:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /** @defgroup USBD_MIDI_Private_FunctionPrototypes
+  53:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @{
+  54:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+  55:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  56:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  57:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_Init (USBD_HandleTypeDef *pdev,
+  58:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                                uint8_t cfgidx);
+  59:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  60:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_DeInit (USBD_HandleTypeDef *pdev,
+  61:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                                  uint8_t cfgidx);
+  62:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  63:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_Setup (USBD_HandleTypeDef *pdev,
+  64:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                                 USBD_SetupReqTypedef *req);
+  65:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  66:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  *USBD_MIDI_GetCfgDesc (uint16_t *length);
+  67:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  68:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  *USBD_MIDI_GetDeviceQualifierDesc (uint16_t *length);
+  69:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  70:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_DataIn (USBD_HandleTypeDef *pdev, uint8_t epnum);
+  71:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  72:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_DataOut (USBD_HandleTypeDef *pdev, uint8_t epnum);
+  73:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  74:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_EP0_RxReady (USBD_HandleTypeDef *pdev);
+  75:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  76:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_EP0_TxReady (USBD_HandleTypeDef *pdev);
+  77:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  78:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_SOF (USBD_HandleTypeDef *pdev);
+  79:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  80:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_IsoINIncomplete (USBD_HandleTypeDef *pdev, uint8_t epnum);
+  81:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  82:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_IsoOutIncomplete (USBD_HandleTypeDef *pdev, uint8_t epnum);
+  83:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  84:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+  85:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @}
+  86:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+  87:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 3
+
+
+  88:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /** @defgroup USBD_MIDI_Private_Variables
+  89:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @{
+  90:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+  91:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+  92:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** USBD_ClassTypeDef  USBD_MIDI =
+  93:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+  94:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_Init,
+  95:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_DeInit,
+  96:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_Setup,
+  97:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_EP0_TxReady,
+  98:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_EP0_RxReady,
+  99:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_DataIn,
+ 100:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_DataOut,
+ 101:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_SOF,
+ 102:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_IsoINIncomplete,
+ 103:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_IsoOutIncomplete,
+ 104:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_GetCfgDesc,
+ 105:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_GetCfgDesc,
+ 106:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_GetCfgDesc,
+ 107:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_GetDeviceQualifierDesc,
+ 108:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** };
+ 109:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 110:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /* USB MIDI device Configuration Descriptor */
+ 111:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** __ALIGN_BEGIN static uint8_t USBD_MIDI_CfgDesc[USB_MIDI_CONFIG_DESC_SIZ] __ALIGN_END =
+ 112:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 113:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /*Configuration Descriptor*/
+ 114:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x09,   /* bLength: Configuration Descriptor size */
+ 115:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USB_DESC_TYPE_CONFIGURATION,      /* bDescriptorType: Configuration */
+ 116:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USB_MIDI_CONFIG_DESC_SIZ,                /* wTotalLength:no of returned bytes */
+ 117:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,
+ 118:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,   /* bNumInterfaces: 2 interface */
+ 119:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bConfigurationValue: Configuration value */
+ 120:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* iConfiguration: Index of string descriptor describing the configuration */
+ 121:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x80,   /* bmAttributes: self powered */
+ 122:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x50,   /* MaxPower */
+ 123:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 124:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /*---------------------------------------------------------------------------*/
+ 125:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 126:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /*Interface Descriptor */
+ 127:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x09,   /* bLength: Interface Descriptor size */
+ 128:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USB_DESC_TYPE_INTERFACE,  /* bDescriptorType: Interface */
+ 129:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* Interface descriptor type */
+ 130:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* bInterfaceNumber: Number of Interface */
+ 131:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* bAlternateSetting: Alternate setting */
+ 132:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* bNumEndpoints: Zero endpoints used */
+ 133:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bInterfaceClass: Audio Class */
+ 134:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bInterfaceSubClass: MIDI */
+ 135:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* bInterfaceProtocol: */
+ 136:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,   /* iInterface: */
+ 137:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 138:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* Class Specific Interface Descriptor */
+ 139:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x09,   /* bLength: Interface Descriptor size */
+ 140:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x24,   /* bDescriptorType: CS_Interface */
+ 141:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bDescriptorSubType */
+ 142:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* bcdADC */
+ 143:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   
+ 144:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x09,   /* wTotalLength */
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 4
+
+
+ 145:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   
+ 146:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* binCollecton */
+ 147:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* baInterfaceNr(1) */
+ 148:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 149:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* Standard MS Interface Descriptor */
+ 150:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x09,   /* bLength: Endpoint Descriptor size */
+ 151:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x04,   /* bDescriptorType: INTERFACE */
+ 152:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bInterfaceNumber */
+ 153:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* bAlternateSetting */ 
+ 154:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,   /* bNumEndpoints */
+ 155:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bInterfaceClass: AUDIO */
+ 156:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x03,   /* MIDI Streaming */
+ 157:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* bInterfaceProtocol */
+ 158:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,   /* iInterface */ 
+ 159:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 160:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* Class-specific MS Interface Descriptor */
+ 161:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x07,   /* bFunctionLength */
+ 162:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x24,   /* bDescriptorType: CS_INTERFACE */
+ 163:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bDescriptorSubtype: Call Management Func Desc */
+ 164:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* bcdADC */
+ 165:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,
+ 166:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x41,   /* wTotalLength */
+ 167:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00, 
+ 168:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 169:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* MIDI IN Jack Descriptor */
+ 170:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x06,   /* bFunctionLength */
+ 171:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x24,   /* bDescriptorType: CS_INTERFACE */
+ 172:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,   /* bDescriptorSubtype: MIDI_IN_JACK */
+ 173:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bJackType: EMBEDDED */
+ 174:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bJackID */
+ 175:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* iJack */
+ 176:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   
+ 177:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* MIDI IN Jack Descriptor */
+ 178:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x06,   /* bFunctionLength */
+ 179:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x24,   /* bDescriptorType: CS_INTERFACE */
+ 180:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,   /* bDescriptorSubtype: MIDI_IN_JACK */
+ 181:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,   /* bJackType: EXTERNAL */
+ 182:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,   /* bJackID */
+ 183:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* iJack */
+ 184:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   
+ 185:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* MIDI OUT Jack Descriptor */
+ 186:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x09,   /* bFunctionLength */
+ 187:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x24,   /* bDescriptorType: CS_INTERFACE */
+ 188:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x03,   /* bDescriptorSubtype: MIDI_OUT_JACK */
+ 189:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bJackType: EMBEDDED */
+ 190:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x03,   /* bJackID */
+ 191:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bNrInputPins */
+ 192:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,   /* BaSourceID(1) */
+ 193:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* BaSourcePin(1) */
+ 194:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* iJack */
+ 195:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 196:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* MIDI OUT Jack Descriptor */
+ 197:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x09,   /* bFunctionLength */
+ 198:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x24,   /* bDescriptorType: CS_INTERFACE */
+ 199:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x03,   /* bDescriptorSubtype: MIDI_OUT_JACK */
+ 200:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,   /* bJackType: EXTERNAL */
+ 201:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x04,   /* bJackID */
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 5
+
+
+ 202:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bNrInputPins */
+ 203:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* BaSourceID(1) */
+ 204:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* BaSourcePin(1) */
+ 205:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* iJack */
+ 206:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 207:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* MIDI IN Jack Descriptor */
+ 208:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x06,   /* bFunctionLength */
+ 209:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x24,   /* bDescriptorType: CS_INTERFACE */
+ 210:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,   /* bDescriptorSubtype: MIDI_IN_JACK */
+ 211:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bJackType: EMBEDDED */
+ 212:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x05,   /* bJackID */
+ 213:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* iJack */
+ 214:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   
+ 215:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* MIDI IN Jack Descriptor */
+ 216:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x06,   /* bFunctionLength */
+ 217:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x24,   /* bDescriptorType: CS_INTERFACE */
+ 218:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,   /* bDescriptorSubtype: MIDI_IN_JACK */
+ 219:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,   /* bJackType: EXTERNAL */
+ 220:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x06,   /* bJackID */
+ 221:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* iJack */
+ 222:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   
+ 223:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* MIDI OUT Jack Descriptor */
+ 224:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x09,   /* bFunctionLength */
+ 225:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x24,   /* bDescriptorType: CS_INTERFACE */
+ 226:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x03,   /* bDescriptorSubtype: MIDI_OUT_JACK */
+ 227:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bJackType: EMBEDDED */
+ 228:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x07,   /* bJackID */
+ 229:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bNrInputPins */
+ 230:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x06,   /* BaSourceID(1) */
+ 231:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* BaSourcePin(1) */
+ 232:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* iJack */
+ 233:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 234:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* MIDI OUT Jack Descriptor */
+ 235:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x09,   /* bFunctionLength */
+ 236:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x24,   /* bDescriptorType: CS_INTERFACE */
+ 237:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x03,   /* bDescriptorSubtype: MIDI_OUT_JACK */
+ 238:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,   /* bJackType: EXTERNAL */
+ 239:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x08,   /* bJackID */
+ 240:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* bNrInputPins */
+ 241:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x05,   /* BaSourceID(1) */
+ 242:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,   /* BaSourcePin(1) */
+ 243:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,   /* iJack */
+ 244:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 245:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /*Endpoint OUT Descriptor*/
+ 246:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x09,   /* bLength: Endpoint Descriptor size */
+ 247:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USB_DESC_TYPE_ENDPOINT,      /* bDescriptorType: Endpoint */
+ 248:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   MIDI_OUT_EP,                        /* bEndpointAddress */
+ 249:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,                              /* bmAttributes: Bulk */
+ 250:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   LOBYTE(USB_FS_MAX_PACKET_SIZE),  /* wMaxPacketSize: */
+ 251:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   HIBYTE(USB_FS_MAX_PACKET_SIZE),
+ 252:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,                              /* bInterval: ignore for Bulk transfer */
+ 253:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,                              /* bRefresh */
+ 254:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,                              /* bSynchAddress */
+ 255:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 256:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x06, /* bLength */
+ 257:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x25, /* bDescriptorType */
+ 258:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01, /* bDescriptorSubtype */
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 6
+
+
+ 259:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02, /* bNumEmbMIDIJack */
+ 260:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01, /* BaAssocJackID(1) */
+ 261:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x05, /* BaAssocJackID(2) */
+ 262:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   
+ 263:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /*Endpoint IN Descriptor*/
+ 264:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x09,   /* bLength: Endpoint Descriptor size */
+ 265:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USB_DESC_TYPE_ENDPOINT,      /* bDescriptorType: Endpoint */
+ 266:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   MIDI_IN_EP,                        /* bEndpointAddress */
+ 267:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,                              /* bmAttributes: Bulk */
+ 268:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   LOBYTE(USB_FS_MAX_PACKET_SIZE),  /* wMaxPacketSize: */
+ 269:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   HIBYTE(USB_FS_MAX_PACKET_SIZE),
+ 270:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,                              /* bInterval: ignore for Bulk transfer */
+ 271:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,                              /* bRefresh */
+ 272:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,                              /* bSynchAddress */
+ 273:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 274:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x06, /* bLength */
+ 275:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x25, /* bDescriptorType */
+ 276:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01, /* bDescriptorSubtype */
+ 277:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02, /* bNumEmbMIDIJack */
+ 278:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x03, /* BaAssocJackID(1) */
+ 279:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x07, /* BaAssocJackID(2) */
+ 280:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** } ;
+ 281:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 282:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /* USB Standard Device Descriptor */
+ 283:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** __ALIGN_BEGIN static uint8_t USBD_MIDI_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_DESC] __ALIGN_END=
+ 284:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 285:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USB_LEN_DEV_QUALIFIER_DESC,
+ 286:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USB_DESC_TYPE_DEVICE_QUALIFIER,
+ 287:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,
+ 288:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x02,
+ 289:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,
+ 290:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,
+ 291:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,
+ 292:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x40,
+ 293:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x01,
+ 294:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   0x00,
+ 295:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** };
+ 296:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 297:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 298:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @}
+ 299:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 300:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 301:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /** @defgroup USBD_MIDI_Private_Functions
+ 302:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @{
+ 303:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 304:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 305:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 306:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  USBD_MIDI_Init
+ 307:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *         Initialize the MIDI interface
+ 308:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  pdev: device instance
+ 309:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  cfgidx: Configuration index
+ 310:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval status
+ 311:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 312:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_Init (USBD_HandleTypeDef *pdev, uint8_t cfgidx)
+ 313:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 314:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_HandleTypeDef   *hmidi;
+ 315:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 7
+
+
+ 316:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* Open EP OUT */
+ 317:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_LL_OpenEP(pdev, MIDI_OUT_EP, USBD_EP_TYPE_BULK, USB_FS_MAX_PACKET_SIZE);
+ 318:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   pdev->ep_out[MIDI_OUT_EP & 0xFU].is_used = 1U;
+ 319:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   
+ 320:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* Open EP IN */
+ 321:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_LL_OpenEP(pdev, MIDI_IN_EP, USBD_EP_TYPE_BULK, USB_FS_MAX_PACKET_SIZE);
+ 322:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   pdev->ep_in[MIDI_IN_EP & 0xFU].is_used = 1U;
+ 323:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 324:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* Allocate MIDI structure */
+ 325:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   pdev->pClassData = USBD_malloc(sizeof (USBD_MIDI_HandleTypeDef));
+ 326:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 327:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   if(pdev->pClassData == NULL)
+ 328:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   {
+ 329:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     return USBD_FAIL;
+ 330:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   }
+ 331:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   else
+ 332:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   {
+ 333:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     hmidi = (USBD_MIDI_HandleTypeDef*) pdev->pClassData;
+ 334:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 335:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     hmidi->tx_busy = 0;
+ 336:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 337:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     /* Prepare Out endpoint to receive 1st packet */
+ 338:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     USBD_LL_PrepareReceive(pdev, MIDI_OUT_EP, hmidi->rx_buffer,
+ 339:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                            USB_FS_MAX_PACKET_SIZE);
+ 340:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   }
+ 341:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return USBD_OK;
+ 342:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 343:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 344:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 345:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  USBD_MIDI_Init
+ 346:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *         DeInitialize the MIDI layer
+ 347:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  pdev: device instance
+ 348:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  cfgidx: Configuration index
+ 349:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval status
+ 350:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 351:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_DeInit (USBD_HandleTypeDef *pdev,
+ 352:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                                  uint8_t cfgidx)
+ 353:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 354:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 355:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* Open EP OUT */
+ 356:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_LL_CloseEP(pdev, MIDI_OUT_EP);
+ 357:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   pdev->ep_out[MIDI_OUT_EP & 0xFU].is_used = 0U;
+ 358:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   
+ 359:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* Open EP IN */
+ 360:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_LL_CloseEP(pdev, MIDI_IN_EP);
+ 361:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   pdev->ep_in[MIDI_IN_EP & 0xFU].is_used = 0U;
+ 362:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 363:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* DeInit  physical Interface components */
+ 364:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   if(pdev->pClassData != NULL)
+ 365:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   {
+ 366:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     USBD_free(pdev->pClassData);
+ 367:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     pdev->pClassData = NULL;
+ 368:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   }
+ 369:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 370:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return USBD_OK;
+ 371:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 372:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 8
+
+
+ 373:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 374:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  USBD_MIDI_Setup
+ 375:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *         Handle the MIDI specific requests
+ 376:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  pdev: instance
+ 377:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  req: usb requests
+ 378:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval status
+ 379:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 380:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_Setup (USBD_HandleTypeDef *pdev,
+ 381:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                                 USBD_SetupReqTypedef *req)
+ 382:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+  29              		.loc 1 382 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+ 383:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return USBD_OK;
+  34              		.loc 1 383 3 view .LVU1
+ 384:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+  35              		.loc 1 384 1 is_stmt 0 view .LVU2
+  36 0000 0020     		movs	r0, #0
+  37              	.LVL1:
+  38              		.loc 1 384 1 view .LVU3
+  39 0002 7047     		bx	lr
+  40              		.cfi_endproc
+  41              	.LFE135:
+  43              		.section	.text.USBD_MIDI_GetCfgDesc,"ax",%progbits
+  44              		.align	1
+  45              		.syntax unified
+  46              		.thumb
+  47              		.thumb_func
+  49              	USBD_MIDI_GetCfgDesc:
+  50              	.LVL2:
+  51              	.LFB136:
+ 385:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 386:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 387:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 388:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  USBD_MIDI_GetCfgDesc
+ 389:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *         return configuration descriptor
+ 390:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  speed : current device speed
+ 391:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  length : pointer data length
+ 392:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval pointer to descriptor rx_buffer
+ 393:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 394:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  *USBD_MIDI_GetCfgDesc (uint16_t *length)
+ 395:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+  52              		.loc 1 395 1 is_stmt 1 view -0
+  53              		.cfi_startproc
+  54              		@ args = 0, pretend = 0, frame = 0
+  55              		@ frame_needed = 0, uses_anonymous_args = 0
+  56              		@ link register save eliminated.
+ 396:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *length = sizeof (USBD_MIDI_CfgDesc);
+  57              		.loc 1 396 3 view .LVU5
+  58              		.loc 1 396 11 is_stmt 0 view .LVU6
+  59 0000 8523     		movs	r3, #133
+  60 0002 0380     		strh	r3, [r0]	@ movhi
+ 397:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return USBD_MIDI_CfgDesc;
+  61              		.loc 1 397 3 is_stmt 1 view .LVU7
+ 398:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 9
+
+
+  62              		.loc 1 398 1 is_stmt 0 view .LVU8
+  63 0004 0048     		ldr	r0, .L3
+  64              	.LVL3:
+  65              		.loc 1 398 1 view .LVU9
+  66 0006 7047     		bx	lr
+  67              	.L4:
+  68              		.align	2
+  69              	.L3:
+  70 0008 00000000 		.word	.LANCHOR0
+  71              		.cfi_endproc
+  72              	.LFE136:
+  74              		.section	.text.USBD_MIDI_DataIn,"ax",%progbits
+  75              		.align	1
+  76              		.syntax unified
+  77              		.thumb
+  78              		.thumb_func
+  80              	USBD_MIDI_DataIn:
+  81              	.LVL4:
+  82              	.LFB137:
+ 399:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 400:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 401:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  USBD_MIDI_DataIn
+ 402:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *         handle data IN Stage
+ 403:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  pdev: device instance
+ 404:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  epnum: endpoint index
+ 405:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval status
+ 406:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 407:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_DataIn (USBD_HandleTypeDef *pdev,
+ 408:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                               uint8_t epnum)
+ 409:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+  83              		.loc 1 409 1 is_stmt 1 view -0
+  84              		.cfi_startproc
+  85              		@ args = 0, pretend = 0, frame = 0
+  86              		@ frame_needed = 0, uses_anonymous_args = 0
+  87              		@ link register save eliminated.
+ 410:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 411:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_HandleTypeDef   *hmidi;
+  88              		.loc 1 411 3 view .LVU11
+ 412:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   hmidi = (USBD_MIDI_HandleTypeDef*) pdev->pClassData;
+  89              		.loc 1 412 3 view .LVU12
+  90              		.loc 1 412 9 is_stmt 0 view .LVU13
+  91 0000 D0F89032 		ldr	r3, [r0, #656]
+  92              	.LVL5:
+ 413:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   hmidi->tx_busy = 0;
+  93              		.loc 1 413 3 is_stmt 1 view .LVU14
+  94              		.loc 1 413 18 is_stmt 0 view .LVU15
+  95 0004 0020     		movs	r0, #0
+  96              	.LVL6:
+  97              		.loc 1 413 18 view .LVU16
+  98 0006 83F88000 		strb	r0, [r3, #128]
+ 414:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   
+ 415:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return USBD_OK;
+  99              		.loc 1 415 3 is_stmt 1 view .LVU17
+ 416:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 100              		.loc 1 416 1 is_stmt 0 view .LVU18
+ 101 000a 7047     		bx	lr
+ 102              		.cfi_endproc
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 10
+
+
+ 103              	.LFE137:
+ 105              		.section	.text.USBD_MIDI_EP0_RxReady,"ax",%progbits
+ 106              		.align	1
+ 107              		.syntax unified
+ 108              		.thumb
+ 109              		.thumb_func
+ 111              	USBD_MIDI_EP0_RxReady:
+ 112              	.LVL7:
+ 113              	.LFB138:
+ 417:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 418:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 419:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  USBD_MIDI_EP0_RxReady
+ 420:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *         handle EP0 Rx Ready event
+ 421:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  pdev: device instance
+ 422:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval status
+ 423:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 424:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_EP0_RxReady (USBD_HandleTypeDef *pdev)
+ 425:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 114              		.loc 1 425 1 is_stmt 1 view -0
+ 115              		.cfi_startproc
+ 116              		@ args = 0, pretend = 0, frame = 0
+ 117              		@ frame_needed = 0, uses_anonymous_args = 0
+ 118              		@ link register save eliminated.
+ 426:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return USBD_OK;
+ 119              		.loc 1 426 3 view .LVU20
+ 427:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 120              		.loc 1 427 1 is_stmt 0 view .LVU21
+ 121 0000 0020     		movs	r0, #0
+ 122              	.LVL8:
+ 123              		.loc 1 427 1 view .LVU22
+ 124 0002 7047     		bx	lr
+ 125              		.cfi_endproc
+ 126              	.LFE138:
+ 128              		.section	.text.USBD_MIDI_EP0_TxReady,"ax",%progbits
+ 129              		.align	1
+ 130              		.syntax unified
+ 131              		.thumb
+ 132              		.thumb_func
+ 134              	USBD_MIDI_EP0_TxReady:
+ 135              	.LVL9:
+ 136              	.LFB139:
+ 428:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 429:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  USBD_MIDI_EP0_TxReady
+ 430:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *         handle EP0 TRx Ready event
+ 431:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  pdev: device instance
+ 432:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval status
+ 433:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 434:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_EP0_TxReady (USBD_HandleTypeDef *pdev)
+ 435:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 137              		.loc 1 435 1 is_stmt 1 view -0
+ 138              		.cfi_startproc
+ 139              		@ args = 0, pretend = 0, frame = 0
+ 140              		@ frame_needed = 0, uses_anonymous_args = 0
+ 141              		@ link register save eliminated.
+ 436:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   /* Only OUT control data are processed */
+ 437:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return USBD_OK;
+ 142              		.loc 1 437 3 view .LVU24
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 11
+
+
+ 438:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 143              		.loc 1 438 1 is_stmt 0 view .LVU25
+ 144 0000 0020     		movs	r0, #0
+ 145              	.LVL10:
+ 146              		.loc 1 438 1 view .LVU26
+ 147 0002 7047     		bx	lr
+ 148              		.cfi_endproc
+ 149              	.LFE139:
+ 151              		.section	.text.USBD_MIDI_SOF,"ax",%progbits
+ 152              		.align	1
+ 153              		.syntax unified
+ 154              		.thumb
+ 155              		.thumb_func
+ 157              	USBD_MIDI_SOF:
+ 158              	.LVL11:
+ 159              	.LFB140:
+ 439:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 440:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  USBD_MIDI_SOF
+ 441:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *         handle SOF event
+ 442:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  pdev: device instance
+ 443:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval status
+ 444:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 445:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_SOF (USBD_HandleTypeDef *pdev)
+ 446:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 160              		.loc 1 446 1 is_stmt 1 view -0
+ 161              		.cfi_startproc
+ 162              		@ args = 0, pretend = 0, frame = 0
+ 163              		@ frame_needed = 0, uses_anonymous_args = 0
+ 164              		@ link register save eliminated.
+ 447:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return USBD_OK;
+ 165              		.loc 1 447 3 view .LVU28
+ 448:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 166              		.loc 1 448 1 is_stmt 0 view .LVU29
+ 167 0000 0020     		movs	r0, #0
+ 168              	.LVL12:
+ 169              		.loc 1 448 1 view .LVU30
+ 170 0002 7047     		bx	lr
+ 171              		.cfi_endproc
+ 172              	.LFE140:
+ 174              		.section	.text.USBD_MIDI_IsoINIncomplete,"ax",%progbits
+ 175              		.align	1
+ 176              		.syntax unified
+ 177              		.thumb
+ 178              		.thumb_func
+ 180              	USBD_MIDI_IsoINIncomplete:
+ 181              	.LVL13:
+ 182              	.LFB142:
+ 449:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 450:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 451:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  USBD_MIDI_SOF
+ 452:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *         handle SOF event
+ 453:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  pdev: device instance
+ 454:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval status
+ 455:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 456:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** void  USBD_MIDI_Sync (USBD_HandleTypeDef *pdev)
+ 457:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 458:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return;
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 12
+
+
+ 459:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 460:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 461:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 462:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  USBD_MIDI_IsoINIncomplete
+ 463:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *         handle data ISO IN Incomplete event
+ 464:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  pdev: device instance
+ 465:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  epnum: endpoint index
+ 466:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval status
+ 467:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 468:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_IsoINIncomplete (USBD_HandleTypeDef *pdev, uint8_t epnum)
+ 469:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 183              		.loc 1 469 1 is_stmt 1 view -0
+ 184              		.cfi_startproc
+ 185              		@ args = 0, pretend = 0, frame = 0
+ 186              		@ frame_needed = 0, uses_anonymous_args = 0
+ 187              		@ link register save eliminated.
+ 470:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return USBD_OK;
+ 188              		.loc 1 470 3 view .LVU32
+ 471:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 189              		.loc 1 471 1 is_stmt 0 view .LVU33
+ 190 0000 0020     		movs	r0, #0
+ 191              	.LVL14:
+ 192              		.loc 1 471 1 view .LVU34
+ 193 0002 7047     		bx	lr
+ 194              		.cfi_endproc
+ 195              	.LFE142:
+ 197              		.section	.text.USBD_MIDI_IsoOutIncomplete,"ax",%progbits
+ 198              		.align	1
+ 199              		.syntax unified
+ 200              		.thumb
+ 201              		.thumb_func
+ 203              	USBD_MIDI_IsoOutIncomplete:
+ 204              	.LVL15:
+ 205              	.LFB143:
+ 472:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 473:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  USBD_MIDI_IsoOutIncomplete
+ 474:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *         handle data ISO OUT Incomplete event
+ 475:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  pdev: device instance
+ 476:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  epnum: endpoint index
+ 477:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval status
+ 478:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 479:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_IsoOutIncomplete (USBD_HandleTypeDef *pdev, uint8_t epnum)
+ 480:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 206              		.loc 1 480 1 is_stmt 1 view -0
+ 207              		.cfi_startproc
+ 208              		@ args = 0, pretend = 0, frame = 0
+ 209              		@ frame_needed = 0, uses_anonymous_args = 0
+ 210              		@ link register save eliminated.
+ 481:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 482:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return USBD_OK;
+ 211              		.loc 1 482 3 view .LVU36
+ 483:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 212              		.loc 1 483 1 is_stmt 0 view .LVU37
+ 213 0000 0020     		movs	r0, #0
+ 214              	.LVL16:
+ 215              		.loc 1 483 1 view .LVU38
+ 216 0002 7047     		bx	lr
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 13
+
+
+ 217              		.cfi_endproc
+ 218              	.LFE143:
+ 220              		.section	.text.USBD_MIDI_GetDeviceQualifierDesc,"ax",%progbits
+ 221              		.align	1
+ 222              		.syntax unified
+ 223              		.thumb
+ 224              		.thumb_func
+ 226              	USBD_MIDI_GetDeviceQualifierDesc:
+ 227              	.LVL17:
+ 228              	.LFB147:
+ 484:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 485:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  USBD_MIDI_DataOut
+ 486:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *         handle data OUT Stage
+ 487:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  pdev: device instance
+ 488:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  epnum: endpoint index
+ 489:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval status
+ 490:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 491:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  USBD_MIDI_DataOut (USBD_HandleTypeDef *pdev,
+ 492:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                               uint8_t epnum)
+ 493:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 494:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_HandleTypeDef   *hmidi;
+ 495:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   hmidi = (USBD_MIDI_HandleTypeDef*) pdev->pClassData;
+ 496:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 497:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   if (epnum == MIDI_OUT_EP)
+ 498:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   {
+ 499:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     /* Get data length and actual data */
+ 500:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     size_t length = USBD_LL_GetRxDataSize(pdev, epnum);
+ 501:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     uint8_t  *rx_buffer = hmidi->rx_buffer;
+ 502:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 503:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     /* Pass data to Receive() */
+ 504:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     for (uint32_t i=0; i < length; i+=4) {
+ 505:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****         ((USBD_MIDI_ItfTypeDef *)pdev->pUserData)->Receive(rx_buffer + i, length);
+ 506:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     }
+ 507:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 508:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     /* Prepare Out endpoint to receive next midi packet */
+ 509:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     USBD_LL_PrepareReceive(pdev, MIDI_OUT_EP, hmidi->rx_buffer,
+ 510:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                            USB_FS_MAX_PACKET_SIZE);
+ 511:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   }
+ 512:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 513:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return USBD_OK;
+ 514:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 515:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 516:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 517:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  MIDI_Req_GetCurrent
+ 518:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *         Handles the GET_CUR MIDI control request.
+ 519:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  pdev: instance
+ 520:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  req: setup class request
+ 521:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval status
+ 522:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 523:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static void MIDI_REQ_GetCurrent(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req)
+ 524:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 525:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return;
+ 526:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 527:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 528:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 529:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  MIDI_Req_SetCurrent
+ 530:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *         Handles the SET_CUR MIDI control request.
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 14
+
+
+ 531:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  pdev: instance
+ 532:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  req: setup class request
+ 533:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval status
+ 534:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 535:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static void MIDI_REQ_SetCurrent(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req)
+ 536:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 537:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return;
+ 538:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 539:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 540:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 541:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 542:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** * @brief  DeviceQualifierDescriptor
+ 543:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** *         return Device Qualifier descriptor
+ 544:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** * @param  length : pointer data length
+ 545:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** * @retval pointer to descriptor rx_buffer
+ 546:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** */
+ 547:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** static uint8_t  *USBD_MIDI_GetDeviceQualifierDesc (uint16_t *length)
+ 548:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 229              		.loc 1 548 1 is_stmt 1 view -0
+ 230              		.cfi_startproc
+ 231              		@ args = 0, pretend = 0, frame = 0
+ 232              		@ frame_needed = 0, uses_anonymous_args = 0
+ 233              		@ link register save eliminated.
+ 549:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *length = sizeof (USBD_MIDI_DeviceQualifierDesc);
+ 234              		.loc 1 549 3 view .LVU40
+ 235              		.loc 1 549 11 is_stmt 0 view .LVU41
+ 236 0000 0A23     		movs	r3, #10
+ 237 0002 0380     		strh	r3, [r0]	@ movhi
+ 550:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return USBD_MIDI_DeviceQualifierDesc;
+ 238              		.loc 1 550 3 is_stmt 1 view .LVU42
+ 551:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 239              		.loc 1 551 1 is_stmt 0 view .LVU43
+ 240 0004 0048     		ldr	r0, .L12
+ 241              	.LVL18:
+ 242              		.loc 1 551 1 view .LVU44
+ 243 0006 7047     		bx	lr
+ 244              	.L13:
+ 245              		.align	2
+ 246              	.L12:
+ 247 0008 00000000 		.word	.LANCHOR1
+ 248              		.cfi_endproc
+ 249              	.LFE147:
+ 251              		.section	.text.USBD_MIDI_DataOut,"ax",%progbits
+ 252              		.align	1
+ 253              		.syntax unified
+ 254              		.thumb
+ 255              		.thumb_func
+ 257              	USBD_MIDI_DataOut:
+ 258              	.LVL19:
+ 259              	.LFB144:
+ 493:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_HandleTypeDef   *hmidi;
+ 260              		.loc 1 493 1 is_stmt 1 view -0
+ 261              		.cfi_startproc
+ 262              		@ args = 0, pretend = 0, frame = 0
+ 263              		@ frame_needed = 0, uses_anonymous_args = 0
+ 493:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_HandleTypeDef   *hmidi;
+ 264              		.loc 1 493 1 is_stmt 0 view .LVU46
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 15
+
+
+ 265 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 266              	.LCFI0:
+ 267              		.cfi_def_cfa_offset 24
+ 268              		.cfi_offset 3, -24
+ 269              		.cfi_offset 4, -20
+ 270              		.cfi_offset 5, -16
+ 271              		.cfi_offset 6, -12
+ 272              		.cfi_offset 7, -8
+ 273              		.cfi_offset 14, -4
+ 494:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   hmidi = (USBD_MIDI_HandleTypeDef*) pdev->pClassData;
+ 274              		.loc 1 494 3 is_stmt 1 view .LVU47
+ 495:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 275              		.loc 1 495 3 view .LVU48
+ 495:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 276              		.loc 1 495 9 is_stmt 0 view .LVU49
+ 277 0002 D0F89072 		ldr	r7, [r0, #656]
+ 278              	.LVL20:
+ 497:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   {
+ 279              		.loc 1 497 3 is_stmt 1 view .LVU50
+ 497:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   {
+ 280              		.loc 1 497 6 is_stmt 0 view .LVU51
+ 281 0006 0129     		cmp	r1, #1
+ 282 0008 01D0     		beq	.L19
+ 283              	.LVL21:
+ 284              	.L15:
+ 513:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 285              		.loc 1 513 3 is_stmt 1 view .LVU52
+ 514:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 286              		.loc 1 514 1 is_stmt 0 view .LVU53
+ 287 000a 0020     		movs	r0, #0
+ 288 000c F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 289              	.LVL22:
+ 290              	.L19:
+ 514:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 291              		.loc 1 514 1 view .LVU54
+ 292 000e 0546     		mov	r5, r0
+ 293              	.LBB2:
+ 500:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     uint8_t  *rx_buffer = hmidi->rx_buffer;
+ 294              		.loc 1 500 5 is_stmt 1 view .LVU55
+ 500:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     uint8_t  *rx_buffer = hmidi->rx_buffer;
+ 295              		.loc 1 500 21 is_stmt 0 view .LVU56
+ 296 0010 FFF7FEFF 		bl	USBD_LL_GetRxDataSize
+ 297              	.LVL23:
+ 500:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     uint8_t  *rx_buffer = hmidi->rx_buffer;
+ 298              		.loc 1 500 21 view .LVU57
+ 299 0014 0646     		mov	r6, r0
+ 300              	.LVL24:
+ 501:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 301              		.loc 1 501 5 is_stmt 1 view .LVU58
+ 504:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****         ((USBD_MIDI_ItfTypeDef *)pdev->pUserData)->Receive(rx_buffer + i, length);
+ 302              		.loc 1 504 5 view .LVU59
+ 303              	.LBB3:
+ 504:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****         ((USBD_MIDI_ItfTypeDef *)pdev->pUserData)->Receive(rx_buffer + i, length);
+ 304              		.loc 1 504 10 view .LVU60
+ 504:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****         ((USBD_MIDI_ItfTypeDef *)pdev->pUserData)->Receive(rx_buffer + i, length);
+ 305              		.loc 1 504 19 is_stmt 0 view .LVU61
+ 306 0016 0024     		movs	r4, #0
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 16
+
+
+ 504:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****         ((USBD_MIDI_ItfTypeDef *)pdev->pUserData)->Receive(rx_buffer + i, length);
+ 307              		.loc 1 504 5 view .LVU62
+ 308 0018 06E0     		b	.L16
+ 309              	.LVL25:
+ 310              	.L17:
+ 505:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     }
+ 311              		.loc 1 505 9 is_stmt 1 discriminator 3 view .LVU63
+ 505:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     }
+ 312              		.loc 1 505 38 is_stmt 0 discriminator 3 view .LVU64
+ 313 001a D5F89432 		ldr	r3, [r5, #660]
+ 505:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     }
+ 314              		.loc 1 505 50 discriminator 3 view .LVU65
+ 315 001e 9B68     		ldr	r3, [r3, #8]
+ 505:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     }
+ 316              		.loc 1 505 10 discriminator 3 view .LVU66
+ 317 0020 3146     		mov	r1, r6
+ 318 0022 3819     		adds	r0, r7, r4
+ 319 0024 9847     		blx	r3
+ 320              	.LVL26:
+ 504:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****         ((USBD_MIDI_ItfTypeDef *)pdev->pUserData)->Receive(rx_buffer + i, length);
+ 321              		.loc 1 504 37 is_stmt 1 discriminator 3 view .LVU67
+ 322 0026 0434     		adds	r4, r4, #4
+ 323              	.LVL27:
+ 324              	.L16:
+ 504:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****         ((USBD_MIDI_ItfTypeDef *)pdev->pUserData)->Receive(rx_buffer + i, length);
+ 325              		.loc 1 504 26 discriminator 1 view .LVU68
+ 326 0028 B442     		cmp	r4, r6
+ 327 002a F6D3     		bcc	.L17
+ 328              	.LBE3:
+ 509:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                            USB_FS_MAX_PACKET_SIZE);
+ 329              		.loc 1 509 5 view .LVU69
+ 330 002c 4023     		movs	r3, #64
+ 331 002e 3A46     		mov	r2, r7
+ 332 0030 0121     		movs	r1, #1
+ 333 0032 2846     		mov	r0, r5
+ 334 0034 FFF7FEFF 		bl	USBD_LL_PrepareReceive
+ 335              	.LVL28:
+ 336 0038 E7E7     		b	.L15
+ 337              	.LBE2:
+ 338              		.cfi_endproc
+ 339              	.LFE144:
+ 341              		.section	.text.USBD_MIDI_DeInit,"ax",%progbits
+ 342              		.align	1
+ 343              		.syntax unified
+ 344              		.thumb
+ 345              		.thumb_func
+ 347              	USBD_MIDI_DeInit:
+ 348              	.LVL29:
+ 349              	.LFB134:
+ 353:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 350              		.loc 1 353 1 view -0
+ 351              		.cfi_startproc
+ 352              		@ args = 0, pretend = 0, frame = 0
+ 353              		@ frame_needed = 0, uses_anonymous_args = 0
+ 353:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 354              		.loc 1 353 1 is_stmt 0 view .LVU71
+ 355 0000 38B5     		push	{r3, r4, r5, lr}
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 17
+
+
+ 356              	.LCFI1:
+ 357              		.cfi_def_cfa_offset 16
+ 358              		.cfi_offset 3, -16
+ 359              		.cfi_offset 4, -12
+ 360              		.cfi_offset 5, -8
+ 361              		.cfi_offset 14, -4
+ 362 0002 0446     		mov	r4, r0
+ 356:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   pdev->ep_out[MIDI_OUT_EP & 0xFU].is_used = 0U;
+ 363              		.loc 1 356 3 is_stmt 1 view .LVU72
+ 364 0004 0121     		movs	r1, #1
+ 365              	.LVL30:
+ 356:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   pdev->ep_out[MIDI_OUT_EP & 0xFU].is_used = 0U;
+ 366              		.loc 1 356 3 is_stmt 0 view .LVU73
+ 367 0006 FFF7FEFF 		bl	USBD_LL_CloseEP
+ 368              	.LVL31:
+ 357:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   
+ 369              		.loc 1 357 3 is_stmt 1 view .LVU74
+ 357:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   
+ 370              		.loc 1 357 44 is_stmt 0 view .LVU75
+ 371 000a 0025     		movs	r5, #0
+ 372 000c C4F85851 		str	r5, [r4, #344]
+ 360:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   pdev->ep_in[MIDI_IN_EP & 0xFU].is_used = 0U;
+ 373              		.loc 1 360 3 is_stmt 1 view .LVU76
+ 374 0010 8121     		movs	r1, #129
+ 375 0012 2046     		mov	r0, r4
+ 376 0014 FFF7FEFF 		bl	USBD_LL_CloseEP
+ 377              	.LVL32:
+ 361:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 378              		.loc 1 361 3 view .LVU77
+ 361:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 379              		.loc 1 361 42 is_stmt 0 view .LVU78
+ 380 0018 E562     		str	r5, [r4, #44]
+ 364:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   {
+ 381              		.loc 1 364 3 is_stmt 1 view .LVU79
+ 364:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   {
+ 382              		.loc 1 364 10 is_stmt 0 view .LVU80
+ 383 001a D4F89002 		ldr	r0, [r4, #656]
+ 364:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   {
+ 384              		.loc 1 364 5 view .LVU81
+ 385 001e 18B1     		cbz	r0, .L21
+ 366:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     pdev->pClassData = NULL;
+ 386              		.loc 1 366 5 is_stmt 1 view .LVU82
+ 387 0020 FFF7FEFF 		bl	free
+ 388              	.LVL33:
+ 367:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   }
+ 389              		.loc 1 367 5 view .LVU83
+ 367:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   }
+ 390              		.loc 1 367 22 is_stmt 0 view .LVU84
+ 391 0024 C4F89052 		str	r5, [r4, #656]
+ 392              	.L21:
+ 370:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 393              		.loc 1 370 3 is_stmt 1 view .LVU85
+ 371:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 394              		.loc 1 371 1 is_stmt 0 view .LVU86
+ 395 0028 0020     		movs	r0, #0
+ 396 002a 38BD     		pop	{r3, r4, r5, pc}
+ 371:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 18
+
+
+ 397              		.loc 1 371 1 view .LVU87
+ 398              		.cfi_endproc
+ 399              	.LFE134:
+ 401              		.section	.text.USBD_MIDI_Init,"ax",%progbits
+ 402              		.align	1
+ 403              		.syntax unified
+ 404              		.thumb
+ 405              		.thumb_func
+ 407              	USBD_MIDI_Init:
+ 408              	.LVL34:
+ 409              	.LFB133:
+ 313:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_HandleTypeDef   *hmidi;
+ 410              		.loc 1 313 1 is_stmt 1 view -0
+ 411              		.cfi_startproc
+ 412              		@ args = 0, pretend = 0, frame = 0
+ 413              		@ frame_needed = 0, uses_anonymous_args = 0
+ 313:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_HandleTypeDef   *hmidi;
+ 414              		.loc 1 313 1 is_stmt 0 view .LVU89
+ 415 0000 38B5     		push	{r3, r4, r5, lr}
+ 416              	.LCFI2:
+ 417              		.cfi_def_cfa_offset 16
+ 418              		.cfi_offset 3, -16
+ 419              		.cfi_offset 4, -12
+ 420              		.cfi_offset 5, -8
+ 421              		.cfi_offset 14, -4
+ 422 0002 0446     		mov	r4, r0
+ 314:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 423              		.loc 1 314 3 is_stmt 1 view .LVU90
+ 317:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   pdev->ep_out[MIDI_OUT_EP & 0xFU].is_used = 1U;
+ 424              		.loc 1 317 3 view .LVU91
+ 425 0004 4023     		movs	r3, #64
+ 426 0006 0222     		movs	r2, #2
+ 427 0008 0121     		movs	r1, #1
+ 428              	.LVL35:
+ 317:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   pdev->ep_out[MIDI_OUT_EP & 0xFU].is_used = 1U;
+ 429              		.loc 1 317 3 is_stmt 0 view .LVU92
+ 430 000a FFF7FEFF 		bl	USBD_LL_OpenEP
+ 431              	.LVL36:
+ 318:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   
+ 432              		.loc 1 318 3 is_stmt 1 view .LVU93
+ 318:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   
+ 433              		.loc 1 318 44 is_stmt 0 view .LVU94
+ 434 000e 0125     		movs	r5, #1
+ 435 0010 C4F85851 		str	r5, [r4, #344]
+ 321:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   pdev->ep_in[MIDI_IN_EP & 0xFU].is_used = 1U;
+ 436              		.loc 1 321 3 is_stmt 1 view .LVU95
+ 437 0014 4023     		movs	r3, #64
+ 438 0016 0222     		movs	r2, #2
+ 439 0018 8121     		movs	r1, #129
+ 440 001a 2046     		mov	r0, r4
+ 441 001c FFF7FEFF 		bl	USBD_LL_OpenEP
+ 442              	.LVL37:
+ 322:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 443              		.loc 1 322 3 view .LVU96
+ 322:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 444              		.loc 1 322 42 is_stmt 0 view .LVU97
+ 445 0020 E562     		str	r5, [r4, #44]
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 19
+
+
+ 325:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 446              		.loc 1 325 3 is_stmt 1 view .LVU98
+ 325:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 447              		.loc 1 325 22 is_stmt 0 view .LVU99
+ 448 0022 8220     		movs	r0, #130
+ 449 0024 FFF7FEFF 		bl	malloc
+ 450              	.LVL38:
+ 325:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 451              		.loc 1 325 20 view .LVU100
+ 452 0028 C4F89002 		str	r0, [r4, #656]
+ 327:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   {
+ 453              		.loc 1 327 3 is_stmt 1 view .LVU101
+ 327:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   {
+ 454              		.loc 1 327 5 is_stmt 0 view .LVU102
+ 455 002c 50B1     		cbz	r0, .L25
+ 456 002e 0246     		mov	r2, r0
+ 333:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 457              		.loc 1 333 5 is_stmt 1 view .LVU103
+ 458              	.LVL39:
+ 335:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 459              		.loc 1 335 5 view .LVU104
+ 335:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 460              		.loc 1 335 20 is_stmt 0 view .LVU105
+ 461 0030 0025     		movs	r5, #0
+ 462 0032 80F88050 		strb	r5, [r0, #128]
+ 338:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                            USB_FS_MAX_PACKET_SIZE);
+ 463              		.loc 1 338 5 is_stmt 1 view .LVU106
+ 464 0036 4023     		movs	r3, #64
+ 465 0038 0121     		movs	r1, #1
+ 466 003a 2046     		mov	r0, r4
+ 467              	.LVL40:
+ 338:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                            USB_FS_MAX_PACKET_SIZE);
+ 468              		.loc 1 338 5 is_stmt 0 view .LVU107
+ 469 003c FFF7FEFF 		bl	USBD_LL_PrepareReceive
+ 470              	.LVL41:
+ 341:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 471              		.loc 1 341 3 is_stmt 1 view .LVU108
+ 341:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 472              		.loc 1 341 10 is_stmt 0 view .LVU109
+ 473 0040 2846     		mov	r0, r5
+ 474              	.L24:
+ 342:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 475              		.loc 1 342 1 view .LVU110
+ 476 0042 38BD     		pop	{r3, r4, r5, pc}
+ 477              	.LVL42:
+ 478              	.L25:
+ 329:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   }
+ 479              		.loc 1 329 12 view .LVU111
+ 480 0044 0220     		movs	r0, #2
+ 481 0046 FCE7     		b	.L24
+ 482              		.cfi_endproc
+ 483              	.LFE133:
+ 485              		.section	.text.USBD_MIDI_Sync,"ax",%progbits
+ 486              		.align	1
+ 487              		.global	USBD_MIDI_Sync
+ 488              		.syntax unified
+ 489              		.thumb
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 20
+
+
+ 490              		.thumb_func
+ 492              	USBD_MIDI_Sync:
+ 493              	.LVL43:
+ 494              	.LFB141:
+ 457:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return;
+ 495              		.loc 1 457 1 is_stmt 1 view -0
+ 496              		.cfi_startproc
+ 497              		@ args = 0, pretend = 0, frame = 0
+ 498              		@ frame_needed = 0, uses_anonymous_args = 0
+ 499              		@ link register save eliminated.
+ 458:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 500              		.loc 1 458 3 view .LVU113
+ 459:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 501              		.loc 1 459 1 is_stmt 0 view .LVU114
+ 502 0000 7047     		bx	lr
+ 503              		.cfi_endproc
+ 504              	.LFE141:
+ 506              		.section	.text.USBD_MIDI_RegisterInterface,"ax",%progbits
+ 507              		.align	1
+ 508              		.global	USBD_MIDI_RegisterInterface
+ 509              		.syntax unified
+ 510              		.thumb
+ 511              		.thumb_func
+ 513              	USBD_MIDI_RegisterInterface:
+ 514              	.LVL44:
+ 515              	.LFB148:
+ 552:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 553:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 554:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** * @brief  USBD_MIDI_RegisterInterface
+ 555:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** * @param  fops: MIDI interface callback
+ 556:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** * @retval status
+ 557:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** */
+ 558:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** uint8_t  USBD_MIDI_RegisterInterface  (USBD_HandleTypeDef   *pdev,
+ 559:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                                         USBD_MIDI_ItfTypeDef *fops)
+ 560:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 516              		.loc 1 560 1 is_stmt 1 view -0
+ 517              		.cfi_startproc
+ 518              		@ args = 0, pretend = 0, frame = 0
+ 519              		@ frame_needed = 0, uses_anonymous_args = 0
+ 520              		@ link register save eliminated.
+ 561:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   if(fops != NULL)
+ 521              		.loc 1 561 3 view .LVU116
+ 522              		.loc 1 561 5 is_stmt 0 view .LVU117
+ 523 0000 09B1     		cbz	r1, .L29
+ 562:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   {
+ 563:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     pdev->pUserData= fops;
+ 524              		.loc 1 563 5 is_stmt 1 view .LVU118
+ 525              		.loc 1 563 20 is_stmt 0 view .LVU119
+ 526 0002 C0F89412 		str	r1, [r0, #660]
+ 527              	.L29:
+ 564:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   }
+ 565:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return USBD_OK;
+ 528              		.loc 1 565 3 is_stmt 1 view .LVU120
+ 566:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 529              		.loc 1 566 1 is_stmt 0 view .LVU121
+ 530 0006 0020     		movs	r0, #0
+ 531              	.LVL45:
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 21
+
+
+ 532              		.loc 1 566 1 view .LVU122
+ 533 0008 7047     		bx	lr
+ 534              		.cfi_endproc
+ 535              	.LFE148:
+ 537              		.section	.text.USBD_MIDI_SetTxBuffer,"ax",%progbits
+ 538              		.align	1
+ 539              		.global	USBD_MIDI_SetTxBuffer
+ 540              		.syntax unified
+ 541              		.thumb
+ 542              		.thumb_func
+ 544              	USBD_MIDI_SetTxBuffer:
+ 545              	.LVL46:
+ 546              	.LFB149:
+ 567:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 568:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 569:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  USBD_MIDI_SetTxBuffer
+ 570:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  pdev: instance
+ 571:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  buffer
+ 572:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval status
+ 573:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 574:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** uint8_t  USBD_MIDI_SetTxBuffer  (USBD_HandleTypeDef   *pdev,
+ 575:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                                 uint8_t  *buff,
+ 576:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                                 uint16_t length)
+ 577:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 547              		.loc 1 577 1 is_stmt 1 view -0
+ 548              		.cfi_startproc
+ 549              		@ args = 0, pretend = 0, frame = 0
+ 550              		@ frame_needed = 0, uses_anonymous_args = 0
+ 551              		.loc 1 577 1 is_stmt 0 view .LVU124
+ 552 0000 38B5     		push	{r3, r4, r5, lr}
+ 553              	.LCFI3:
+ 554              		.cfi_def_cfa_offset 16
+ 555              		.cfi_offset 3, -16
+ 556              		.cfi_offset 4, -12
+ 557              		.cfi_offset 5, -8
+ 558              		.cfi_offset 14, -4
+ 559 0002 1446     		mov	r4, r2
+ 578:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_HandleTypeDef   *hmidi = (USBD_MIDI_HandleTypeDef*) pdev->pClassData;
+ 560              		.loc 1 578 3 is_stmt 1 view .LVU125
+ 561              		.loc 1 578 30 is_stmt 0 view .LVU126
+ 562 0004 D0F89052 		ldr	r5, [r0, #656]
+ 563              	.LVL47:
+ 579:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 580:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   // hmidi->tx_buffer = buff;
+ 581:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   memcpy(hmidi->tx_buffer, buff, length);
+ 564              		.loc 1 581 3 is_stmt 1 view .LVU127
+ 565 0008 05F14000 		add	r0, r5, #64
+ 566              	.LVL48:
+ 567              		.loc 1 581 3 is_stmt 0 view .LVU128
+ 568 000c FFF7FEFF 		bl	memcpy
+ 569              	.LVL49:
+ 582:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   hmidi->tx_length = length;
+ 570              		.loc 1 582 3 is_stmt 1 view .LVU129
+ 571              		.loc 1 582 20 is_stmt 0 view .LVU130
+ 572 0010 85F88140 		strb	r4, [r5, #129]
+ 583:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 584:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   return USBD_OK;
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 22
+
+
+ 573              		.loc 1 584 3 is_stmt 1 view .LVU131
+ 585:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 574              		.loc 1 585 1 is_stmt 0 view .LVU132
+ 575 0014 0020     		movs	r0, #0
+ 576 0016 38BD     		pop	{r3, r4, r5, pc}
+ 577              		.loc 1 585 1 view .LVU133
+ 578              		.cfi_endproc
+ 579              	.LFE149:
+ 581              		.section	.text.USBD_MIDI_TransmitPacket,"ax",%progbits
+ 582              		.align	1
+ 583              		.global	USBD_MIDI_TransmitPacket
+ 584              		.syntax unified
+ 585              		.thumb
+ 586              		.thumb_func
+ 588              	USBD_MIDI_TransmitPacket:
+ 589              	.LVL50:
+ 590              	.LFB150:
+ 586:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 587:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** /**
+ 588:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @brief  USBD_MIDI_TransmitPacket
+ 589:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   *         Transmit packet on IN endpoint
+ 590:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @param  pdev: device instance
+ 591:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   * @retval status
+ 592:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   */
+ 593:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** uint8_t  USBD_MIDI_TransmitPacket(USBD_HandleTypeDef *pdev)
+ 594:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** {
+ 591              		.loc 1 594 1 is_stmt 1 view -0
+ 592              		.cfi_startproc
+ 593              		@ args = 0, pretend = 0, frame = 0
+ 594              		@ frame_needed = 0, uses_anonymous_args = 0
+ 595              		.loc 1 594 1 is_stmt 0 view .LVU135
+ 596 0000 10B5     		push	{r4, lr}
+ 597              	.LCFI4:
+ 598              		.cfi_def_cfa_offset 8
+ 599              		.cfi_offset 4, -8
+ 600              		.cfi_offset 14, -4
+ 595:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   USBD_MIDI_HandleTypeDef   *hmidi = (USBD_MIDI_HandleTypeDef*) pdev->pClassData;
+ 601              		.loc 1 595 3 is_stmt 1 view .LVU136
+ 602              		.loc 1 595 30 is_stmt 0 view .LVU137
+ 603 0002 D0F89022 		ldr	r2, [r0, #656]
+ 604              	.LVL51:
+ 596:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 597:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   if(hmidi->tx_busy == 0) {
+ 605              		.loc 1 597 3 is_stmt 1 view .LVU138
+ 606              		.loc 1 597 11 is_stmt 0 view .LVU139
+ 607 0006 92F88040 		ldrb	r4, [r2, #128]	@ zero_extendqisi2
+ 608              		.loc 1 597 5 view .LVU140
+ 609 000a 14B1     		cbz	r4, .L36
+ 598:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 599:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     hmidi->tx_busy = 1;
+ 600:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     pdev->ep_in[MIDI_IN_EP & 0xFU].total_length = hmidi->tx_length;
+ 601:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 602:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     /* Transmit */
+ 603:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     USBD_LL_Transmit(pdev, MIDI_IN_EP, hmidi->tx_buffer,
+ 604:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                      (uint8_t)hmidi->tx_length);
+ 605:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     
+ 606:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     return USBD_OK;
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 23
+
+
+ 607:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   } else {
+ 608:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     return USBD_BUSY;
+ 610              		.loc 1 608 12 view .LVU141
+ 611 000c 0124     		movs	r4, #1
+ 612              	.LVL52:
+ 613              	.L33:
+ 609:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   }
+ 610:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** }
+ 614              		.loc 1 610 1 view .LVU142
+ 615 000e 2046     		mov	r0, r4
+ 616 0010 10BD     		pop	{r4, pc}
+ 617              	.LVL53:
+ 618              	.L36:
+ 599:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     pdev->ep_in[MIDI_IN_EP & 0xFU].total_length = hmidi->tx_length;
+ 619              		.loc 1 599 5 is_stmt 1 view .LVU143
+ 599:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****     pdev->ep_in[MIDI_IN_EP & 0xFU].total_length = hmidi->tx_length;
+ 620              		.loc 1 599 20 is_stmt 0 view .LVU144
+ 621 0012 0123     		movs	r3, #1
+ 622 0014 82F88030 		strb	r3, [r2, #128]
+ 600:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 623              		.loc 1 600 5 is_stmt 1 view .LVU145
+ 600:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 624              		.loc 1 600 56 is_stmt 0 view .LVU146
+ 625 0018 92F88130 		ldrb	r3, [r2, #129]	@ zero_extendqisi2
+ 600:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c **** 
+ 626              		.loc 1 600 49 view .LVU147
+ 627 001c 0363     		str	r3, [r0, #48]
+ 603:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                      (uint8_t)hmidi->tx_length);
+ 628              		.loc 1 603 5 is_stmt 1 view .LVU148
+ 629 001e 92F88130 		ldrb	r3, [r2, #129]	@ zero_extendqisi2
+ 630 0022 4032     		adds	r2, r2, #64
+ 631              	.LVL54:
+ 603:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****                      (uint8_t)hmidi->tx_length);
+ 632              		.loc 1 603 5 is_stmt 0 view .LVU149
+ 633 0024 8121     		movs	r1, #129
+ 634 0026 FFF7FEFF 		bl	USBD_LL_Transmit
+ 635              	.LVL55:
+ 606:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   } else {
+ 636              		.loc 1 606 5 is_stmt 1 view .LVU150
+ 606:Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Src/usbd_midi.c ****   } else {
+ 637              		.loc 1 606 12 is_stmt 0 view .LVU151
+ 638 002a F0E7     		b	.L33
+ 639              		.cfi_endproc
+ 640              	.LFE150:
+ 642              		.global	USBD_MIDI
+ 643              		.section	.data.USBD_MIDI,"aw"
+ 644              		.align	2
+ 647              	USBD_MIDI:
+ 648 0000 00000000 		.word	USBD_MIDI_Init
+ 649 0004 00000000 		.word	USBD_MIDI_DeInit
+ 650 0008 00000000 		.word	USBD_MIDI_Setup
+ 651 000c 00000000 		.word	USBD_MIDI_EP0_TxReady
+ 652 0010 00000000 		.word	USBD_MIDI_EP0_RxReady
+ 653 0014 00000000 		.word	USBD_MIDI_DataIn
+ 654 0018 00000000 		.word	USBD_MIDI_DataOut
+ 655 001c 00000000 		.word	USBD_MIDI_SOF
+ 656 0020 00000000 		.word	USBD_MIDI_IsoINIncomplete
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 24
+
+
+ 657 0024 00000000 		.word	USBD_MIDI_IsoOutIncomplete
+ 658 0028 00000000 		.word	USBD_MIDI_GetCfgDesc
+ 659 002c 00000000 		.word	USBD_MIDI_GetCfgDesc
+ 660 0030 00000000 		.word	USBD_MIDI_GetCfgDesc
+ 661 0034 00000000 		.word	USBD_MIDI_GetDeviceQualifierDesc
+ 662              		.section	.data.USBD_MIDI_CfgDesc,"aw"
+ 663              		.align	2
+ 664              		.set	.LANCHOR0,. + 0
+ 667              	USBD_MIDI_CfgDesc:
+ 668 0000 09028500 		.ascii	"\011\002\205\000\002\001\000\200P\011\004\000\000\000"
+ 668      02010080 
+ 668      50090400 
+ 668      0000
+ 669 000e 01010002 		.ascii	"\001\001\000\002\011$\001\000\001\011\000\001\001\011"
+ 669      09240100 
+ 669      01090001 
+ 669      0109
+ 670 001c 04010002 		.ascii	"\004\001\000\002\001\003\000\002\007$\001\000\001A\000"
+ 670      01030002 
+ 670      07240100 
+ 670      014100
+ 671 002b 06240201 		.ascii	"\006$\002\001\001\000\006$\002\002\002\000\011$\003"
+ 671      01000624 
+ 671      02020200 
+ 671      092403
+ 672 003a 01030102 		.ascii	"\001\003\001\002\001\000\011$\003\002\004\001\001\001"
+ 672      01000924 
+ 672      03020401 
+ 672      0101
+ 673 0048 00062402 		.ascii	"\000\006$\002\001\005\000\006$\002\002\006\000\011$"
+ 673      01050006 
+ 673      24020206 
+ 673      000924
+ 674 0057 03010701 		.ascii	"\003\001\007\001\006\001\000\011$\003\002\010\001\005"
+ 674      06010009 
+ 674      24030208 
+ 674      0105
+ 675 0065 01000905 		.ascii	"\001\000\011\005\001\002@\000\000\000\000\006%\001\002"
+ 675      01024000 
+ 675      00000006 
+ 675      250102
+ 676 0074 01050905 		.ascii	"\001\005\011\005\201\002@\000\000\000\000\006%\001\002"
+ 676      81024000 
+ 676      00000006 
+ 676      250102
+ 677 0083 0307     		.ascii	"\003\007"
+ 678              		.section	.data.USBD_MIDI_DeviceQualifierDesc,"aw"
+ 679              		.align	2
+ 680              		.set	.LANCHOR1,. + 0
+ 683              	USBD_MIDI_DeviceQualifierDesc:
+ 684 0000 0A060002 		.ascii	"\012\006\000\002\000\000\000@\001\000"
+ 684      00000040 
+ 684      0100
+ 685              		.text
+ 686              	.Letext0:
+ 687              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+ 688              		.file 3 "/Applications/ARM/lib/gcc/arm-none-eabi/11.2.1/include/stddef.h"
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 25
+
+
+ 689              		.file 4 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+ 690              		.file 5 "Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h"
+ 691              		.file 6 "Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Inc/usbd_midi.h"
+ 692              		.file 7 "Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h"
+ 693              		.file 8 "/Applications/ARM/arm-none-eabi/include/string.h"
+ 694              		.file 9 "/Applications/ARM/arm-none-eabi/include/stdlib.h"
+ 695              		.file 10 "<built-in>"
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s 			page 26
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 usbd_midi.c
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:20     .text.USBD_MIDI_Setup:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:25     .text.USBD_MIDI_Setup:0000000000000000 USBD_MIDI_Setup
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:44     .text.USBD_MIDI_GetCfgDesc:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:49     .text.USBD_MIDI_GetCfgDesc:0000000000000000 USBD_MIDI_GetCfgDesc
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:70     .text.USBD_MIDI_GetCfgDesc:0000000000000008 $d
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:75     .text.USBD_MIDI_DataIn:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:80     .text.USBD_MIDI_DataIn:0000000000000000 USBD_MIDI_DataIn
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:106    .text.USBD_MIDI_EP0_RxReady:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:111    .text.USBD_MIDI_EP0_RxReady:0000000000000000 USBD_MIDI_EP0_RxReady
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:129    .text.USBD_MIDI_EP0_TxReady:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:134    .text.USBD_MIDI_EP0_TxReady:0000000000000000 USBD_MIDI_EP0_TxReady
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:152    .text.USBD_MIDI_SOF:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:157    .text.USBD_MIDI_SOF:0000000000000000 USBD_MIDI_SOF
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:175    .text.USBD_MIDI_IsoINIncomplete:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:180    .text.USBD_MIDI_IsoINIncomplete:0000000000000000 USBD_MIDI_IsoINIncomplete
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:198    .text.USBD_MIDI_IsoOutIncomplete:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:203    .text.USBD_MIDI_IsoOutIncomplete:0000000000000000 USBD_MIDI_IsoOutIncomplete
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:221    .text.USBD_MIDI_GetDeviceQualifierDesc:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:226    .text.USBD_MIDI_GetDeviceQualifierDesc:0000000000000000 USBD_MIDI_GetDeviceQualifierDesc
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:247    .text.USBD_MIDI_GetDeviceQualifierDesc:0000000000000008 $d
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:252    .text.USBD_MIDI_DataOut:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:257    .text.USBD_MIDI_DataOut:0000000000000000 USBD_MIDI_DataOut
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:342    .text.USBD_MIDI_DeInit:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:347    .text.USBD_MIDI_DeInit:0000000000000000 USBD_MIDI_DeInit
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:402    .text.USBD_MIDI_Init:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:407    .text.USBD_MIDI_Init:0000000000000000 USBD_MIDI_Init
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:486    .text.USBD_MIDI_Sync:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:492    .text.USBD_MIDI_Sync:0000000000000000 USBD_MIDI_Sync
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:507    .text.USBD_MIDI_RegisterInterface:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:513    .text.USBD_MIDI_RegisterInterface:0000000000000000 USBD_MIDI_RegisterInterface
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:538    .text.USBD_MIDI_SetTxBuffer:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:544    .text.USBD_MIDI_SetTxBuffer:0000000000000000 USBD_MIDI_SetTxBuffer
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:582    .text.USBD_MIDI_TransmitPacket:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:588    .text.USBD_MIDI_TransmitPacket:0000000000000000 USBD_MIDI_TransmitPacket
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:647    .data.USBD_MIDI:0000000000000000 USBD_MIDI
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:644    .data.USBD_MIDI:0000000000000000 $d
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:663    .data.USBD_MIDI_CfgDesc:0000000000000000 $d
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:667    .data.USBD_MIDI_CfgDesc:0000000000000000 USBD_MIDI_CfgDesc
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:679    .data.USBD_MIDI_DeviceQualifierDesc:0000000000000000 $d
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccl674R8.s:683    .data.USBD_MIDI_DeviceQualifierDesc:0000000000000000 USBD_MIDI_DeviceQualifierDesc
+
+UNDEFINED SYMBOLS
+USBD_LL_GetRxDataSize
+USBD_LL_PrepareReceive
+USBD_LL_CloseEP
+free
+USBD_LL_OpenEP
+malloc
+memcpy
+USBD_LL_Transmit

@@ -1,0 +1,173 @@
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccswU8tq.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"usb_device.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.MX_USB_DEVICE_Init,"ax",%progbits
+  20              		.align	1
+  21              		.global	MX_USB_DEVICE_Init
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	MX_USB_DEVICE_Init:
+  27              	.LFB133:
+  28              		.file 1 "Core/Src/usb_device.c"
+   1:Core/Src/usb_device.c **** /**
+   2:Core/Src/usb_device.c ****   ******************************************************************************
+   3:Core/Src/usb_device.c ****   * @file           : USB_DEVICE  
+   4:Core/Src/usb_device.c ****   * @version        : v1.0_Cube
+   5:Core/Src/usb_device.c ****   * @brief          : This file implements the USB Device 
+   6:Core/Src/usb_device.c ****   ******************************************************************************
+   7:Core/Src/usb_device.c ****   *
+   8:Core/Src/usb_device.c ****   * COPYRIGHT(c) 2016 STMicroelectronics
+   9:Core/Src/usb_device.c ****   *
+  10:Core/Src/usb_device.c ****   * Redistribution and use in source and binary forms, with or without modification,
+  11:Core/Src/usb_device.c ****   * are permitted provided that the following conditions are met:
+  12:Core/Src/usb_device.c ****   * 1. Redistributions of source code must retain the above copyright notice,
+  13:Core/Src/usb_device.c ****   * this list of conditions and the following disclaimer.
+  14:Core/Src/usb_device.c ****   * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Core/Src/usb_device.c ****   * this list of conditions and the following disclaimer in the documentation
+  16:Core/Src/usb_device.c ****   * and/or other materials provided with the distribution.
+  17:Core/Src/usb_device.c ****   * 3. Neither the name of STMicroelectronics nor the names of its contributors
+  18:Core/Src/usb_device.c ****   * may be used to endorse or promote products derived from this software
+  19:Core/Src/usb_device.c ****   * without specific prior written permission.
+  20:Core/Src/usb_device.c ****   *
+  21:Core/Src/usb_device.c ****   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:Core/Src/usb_device.c ****   * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:Core/Src/usb_device.c ****   * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  24:Core/Src/usb_device.c ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  25:Core/Src/usb_device.c ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  26:Core/Src/usb_device.c ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  27:Core/Src/usb_device.c ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  28:Core/Src/usb_device.c ****   * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  29:Core/Src/usb_device.c ****   * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  30:Core/Src/usb_device.c ****   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccswU8tq.s 			page 2
+
+
+  31:Core/Src/usb_device.c ****   *
+  32:Core/Src/usb_device.c ****   ******************************************************************************
+  33:Core/Src/usb_device.c **** */
+  34:Core/Src/usb_device.c **** 
+  35:Core/Src/usb_device.c **** /* Includes ------------------------------------------------------------------*/
+  36:Core/Src/usb_device.c **** 
+  37:Core/Src/usb_device.c **** #include "usb_device.h"
+  38:Core/Src/usb_device.c **** #include "usbd_core.h"
+  39:Core/Src/usb_device.c **** #include "usbd_desc.h"
+  40:Core/Src/usb_device.c **** #include "usbd_midi_if.h"
+  41:Core/Src/usb_device.c **** 
+  42:Core/Src/usb_device.c **** /* USB Device Core handle declaration */
+  43:Core/Src/usb_device.c **** USBD_HandleTypeDef hUsbDeviceFS;
+  44:Core/Src/usb_device.c **** 
+  45:Core/Src/usb_device.c **** /* init function */
+  46:Core/Src/usb_device.c **** void MX_USB_DEVICE_Init(void)
+  47:Core/Src/usb_device.c **** {
+  29              		.loc 1 47 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 10B5     		push	{r4, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 4, -8
+  37              		.cfi_offset 14, -4
+  48:Core/Src/usb_device.c ****   /* Init Device Library,Add Supported Class and Start the library*/
+  49:Core/Src/usb_device.c ****   USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS);
+  38              		.loc 1 49 3 view .LVU1
+  39 0002 094C     		ldr	r4, .L3
+  40 0004 0022     		movs	r2, #0
+  41 0006 0949     		ldr	r1, .L3+4
+  42 0008 2046     		mov	r0, r4
+  43 000a FFF7FEFF 		bl	USBD_Init
+  44              	.LVL0:
+  50:Core/Src/usb_device.c **** 
+  51:Core/Src/usb_device.c ****   USBD_RegisterClass(&hUsbDeviceFS, &USBD_MIDI);
+  45              		.loc 1 51 3 view .LVU2
+  46 000e 0849     		ldr	r1, .L3+8
+  47 0010 2046     		mov	r0, r4
+  48 0012 FFF7FEFF 		bl	USBD_RegisterClass
+  49              	.LVL1:
+  52:Core/Src/usb_device.c **** 
+  53:Core/Src/usb_device.c ****   USBD_MIDI_RegisterInterface(&hUsbDeviceFS, &USBD_MIDI_fops);
+  50              		.loc 1 53 3 view .LVU3
+  51 0016 0749     		ldr	r1, .L3+12
+  52 0018 2046     		mov	r0, r4
+  53 001a FFF7FEFF 		bl	USBD_MIDI_RegisterInterface
+  54              	.LVL2:
+  54:Core/Src/usb_device.c **** 
+  55:Core/Src/usb_device.c ****   USBD_Start(&hUsbDeviceFS);
+  55              		.loc 1 55 3 view .LVU4
+  56 001e 2046     		mov	r0, r4
+  57 0020 FFF7FEFF 		bl	USBD_Start
+  58              	.LVL3:
+  56:Core/Src/usb_device.c **** 
+  57:Core/Src/usb_device.c **** }
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccswU8tq.s 			page 3
+
+
+  59              		.loc 1 57 1 is_stmt 0 view .LVU5
+  60 0024 10BD     		pop	{r4, pc}
+  61              	.L4:
+  62 0026 00BF     		.align	2
+  63              	.L3:
+  64 0028 00000000 		.word	.LANCHOR0
+  65 002c 00000000 		.word	FS_Desc
+  66 0030 00000000 		.word	USBD_MIDI
+  67 0034 00000000 		.word	USBD_MIDI_fops
+  68              		.cfi_endproc
+  69              	.LFE133:
+  71              		.global	hUsbDeviceFS
+  72              		.section	.bss.hUsbDeviceFS,"aw",%nobits
+  73              		.align	2
+  74              		.set	.LANCHOR0,. + 0
+  77              	hUsbDeviceFS:
+  78 0000 00000000 		.space	672
+  78      00000000 
+  78      00000000 
+  78      00000000 
+  78      00000000 
+  79              		.text
+  80              	.Letext0:
+  81              		.file 2 "/Applications/ARM/arm-none-eabi/include/machine/_default_types.h"
+  82              		.file 3 "/Applications/ARM/arm-none-eabi/include/sys/_stdint.h"
+  83              		.file 4 "Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h"
+  84              		.file 5 "Core/Inc/usb_device.h"
+  85              		.file 6 "Core/Inc/usbd_desc.h"
+  86              		.file 7 "Middlewares/ST/STM32_USB_Device_Library/Class/MIDI/Inc/usbd_midi.h"
+  87              		.file 8 "Core/Inc/usbd_midi_if.h"
+  88              		.file 9 "Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h"
+ARM GAS  /var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccswU8tq.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 usb_device.c
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccswU8tq.s:20     .text.MX_USB_DEVICE_Init:0000000000000000 $t
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccswU8tq.s:26     .text.MX_USB_DEVICE_Init:0000000000000000 MX_USB_DEVICE_Init
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccswU8tq.s:64     .text.MX_USB_DEVICE_Init:0000000000000028 $d
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccswU8tq.s:77     .bss.hUsbDeviceFS:0000000000000000 hUsbDeviceFS
+/var/folders/jr/lt9tb7vj2871x9rxdxc0hz4h0000gn/T//ccswU8tq.s:73     .bss.hUsbDeviceFS:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+USBD_Init
+USBD_RegisterClass
+USBD_MIDI_RegisterInterface
+USBD_Start
+FS_Desc
+USBD_MIDI
+USBD_MIDI_fops

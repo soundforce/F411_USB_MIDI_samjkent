@@ -1,0 +1,17 @@
+/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/MacOs/bin/STM32_Programmer_CLI -c port=swd -w build/F411_USB_MIDI.hex -v -rst
+
+make && /Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/MacOs/bin/STM32_Programmer_CLI -c port=usb1 -w build/F411_USB_MIDI.elf --start 0x08000000
+
+
+
+ls /dev/tty.*
+
+screen /dev/tty.usbserial-0001 115200
+
+
+
+/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/MacOs/bin/STM32_Programmer_CLI -c port=swd -rst -e all
+
+/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/MacOs/bin/STM32_Programmer_CLI -c port=usb1 -rst -e all
+
+make && /Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/MacOs/bin/STM32_Programmer_CLI -c port=/dev/tty.usbserial-0001 -rst -e all
